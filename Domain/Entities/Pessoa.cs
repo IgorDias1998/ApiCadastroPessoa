@@ -52,11 +52,8 @@ namespace ApiCadastroPessoa.Domain.Entities
             if (string.IsNullOrWhiteSpace(nome))
                 throw new DomainExceptions("Nome é obrigatório.");
 
-            if (string.IsNullOrWhiteSpace(email) || !email.Contains("@"))
+            if (string.IsNullOrWhiteSpace(email) || !email.Contains("@") || !email.Contains("."))
                 throw new DomainExceptions("Email inválido.");
-
-            if (dataNascimento > DateTime.Today.AddYears(-18))
-                throw new DomainExceptions("Pessoa deve ser maior de idade.");
 
             if (string.IsNullOrWhiteSpace(telefone))
                 throw new DomainExceptions("Telefone é obrigatório.");
