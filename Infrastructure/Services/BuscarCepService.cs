@@ -35,6 +35,7 @@ namespace ApiCadastroPessoa.Infrastructure.Services
             };
         }
 
+        //Dto de resposta interna
         private class BuscarCepResponse
         {
             public string cep { get; set; } = string.Empty;
