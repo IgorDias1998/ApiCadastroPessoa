@@ -43,5 +43,43 @@ namespace ApiCadastroPessoa.Application.Services
 
             await _repository.AdicionarPessoaAsync(pessoa);
         }
+
+        public async Task<PessoaResponseDto> ObterPessoaPorIdAsync(Guid id)
+        {
+            var pessoa = await _repository.ObterPessoaPorIdAsync(id);
+
+            if (pessoa == null)
+                throw new Exception("Pessoa não encontrada");
+
+            return MapearParaResponse(pessoa);
+        }
+
+        public async Task<List<PessoaResponseDto>> ObterTodasPessoasAsync()
+        {
+            var pessoas = await _repository.ObterTodasPessoasAsync();
+            return pessoas.Select(MapearParaResponse).ToList();
+        }
+
+        private PessoaResponseDto MapearParaResponse(Pessoa pessoa)
+        {
+            return new PessoaResponseDto
+            {
+                Id = pessoa.Id,
+                Nome = pessoa.Nome,
+                Email = pessoa.Email,
+                Telefone = pessoa.Telefone,
+                DataNascimento = pessoa.DataNascimento,
+                Endereco = new EnderecoResponseDto
+                {
+                    Cep = pessoa.Endereco.Cep,
+                    Logradouro = pessoa.Endereco.Logradouro,
+                    Bairro = pessoa.Endereco.Bairro,
+                    Cidade = pessoa.Endereco.Cidade,
+                    Estado = pessoa.Endereco.Estado,
+                    Numero = pessoa.Endereco.Numero,
+                    Complemento = pessoa.Endereco.Complemento
+                }
+            };
+        }
     }
 }

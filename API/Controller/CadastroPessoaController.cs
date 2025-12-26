@@ -21,5 +21,21 @@ namespace ApiCadastroPessoa.API.Controller
             await _cadastroPessoaService.CriarAsync(dto);
             return Created(string.Empty, null);
         }
+
+        // GET /api/pessoas
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            var pessoas = await _cadastroPessoaService.ObterTodasPessoasAsync();
+            return Ok(pessoas);
+        }
+
+        // GET /api/pessoas/{id}
+        [HttpGet("{id:guid}")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            var pessoa = await _cadastroPessoaService.ObterPessoaPorIdAsync(id);
+            return Ok(pessoa);
+        }
     }
 }
