@@ -19,10 +19,13 @@ namespace ApiCadastroPessoa.API.Controller
         public async Task<ActionResult> Post([FromBody] PessoaCreateDto dto)
         {
             await _cadastroPessoaService.CriarAsync(dto);
-            return Created(string.Empty, null);
+            return Created("", new ApiResponseDto
+            {
+                Sucesso = true,
+                Mensagem = "Cadastro realizado com sucesso."
+            });
         }
 
-        // GET /api/pessoas
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -30,12 +33,33 @@ namespace ApiCadastroPessoa.API.Controller
             return Ok(pessoas);
         }
 
-        // GET /api/pessoas/{id}
         [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetById(Guid id)
         {
             var pessoa = await _cadastroPessoaService.ObterPessoaPorIdAsync(id);
             return Ok(pessoa);
+        }
+
+        [HttpPut("{id:guid}")]
+        public async Task<IActionResult> Put(Guid id, [FromBody] PessoaUpdateDto dto)
+        {
+            await _cadastroPessoaService.AtualizarAsync(id, dto);
+            return Ok(new ApiResponseDto
+            {
+                Sucesso = true,
+                Mensagem = "Cadastro atualizado com sucesso."
+            });
+        }
+
+        [HttpDelete("{id:guid}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            await _cadastroPessoaService.RemoverAsync(id);
+            return Ok(new ApiResponseDto
+            {
+                Sucesso = true,
+                Mensagem = "Cadastro removido com sucesso."
+            });
         }
     }
 }

@@ -60,6 +60,45 @@ namespace ApiCadastroPessoa.Application.Services
             return pessoas.Select(MapearParaResponse).ToList();
         }
 
+        public async Task AtualizarAsync(Guid id, PessoaUpdateDto dto)
+        {
+            var pessoa = await _repository.ObterPessoaPorIdAsync(id);
+
+            if (pessoa == null)
+                throw new Exception("Pessoa não encontrada.");
+
+            var cepResult = await _cepService.BuscarCepAsync(dto.Cep);
+
+            var endereco = new Endereco(
+                cepResult.Cep,
+                cepResult.Logradouro,
+                cepResult.Bairro,
+                cepResult.Cidade,
+                cepResult.Estado,
+                dto.Numero,
+                dto.Complemento
+            );
+
+            pessoa.AtualizarDados(
+                dto.Nome,
+                dto.Email,
+                dto.Telefone,
+                endereco
+            );
+
+            await _repository.AtualizarPessoaAsync(pessoa);
+        }
+
+        public async Task RemoverAsync(Guid id)
+        {
+            var pessoa = await _repository.ObterPessoaPorIdAsync(id);
+
+            if (pessoa == null)
+                throw new Exception("Pessoa não encontrada.");
+
+            await _repository.RemoverPessoaAsync(pessoa);
+        }
+
         private PessoaResponseDto MapearParaResponse(Pessoa pessoa)
         {
             return new PessoaResponseDto

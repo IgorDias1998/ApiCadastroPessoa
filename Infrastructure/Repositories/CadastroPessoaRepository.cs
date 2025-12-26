@@ -32,5 +32,17 @@ namespace ApiCadastroPessoa.Infrastructure.Repositories
                 .AsNoTracking()
                 .ToListAsync();
         }
+
+        public async Task AtualizarPessoaAsync(Pessoa pessoa)
+        {
+            _context.Pessoas.Update(pessoa);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task RemoverPessoaAsync(Pessoa pessoa)
+        {
+            _context.Pessoas.Remove(pessoa);
+            await _context.SaveChangesAsync();
+        }
     }
 }
