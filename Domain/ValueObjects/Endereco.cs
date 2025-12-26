@@ -48,7 +48,7 @@ namespace ApiCadastroPessoa.Domain.ValueObjects
             if (string.IsNullOrWhiteSpace(cidade))
                 throw new DomainExceptions("Cidade é obrigatória.");
 
-            if (string.IsNullOrWhiteSpace(estado) || estado.Length != 2)
+            if (string.IsNullOrWhiteSpace(estado))
                 throw new DomainExceptions("Estado inválido.");
 
             if (string.IsNullOrWhiteSpace(numero))
